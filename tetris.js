@@ -15,6 +15,7 @@ var wasRightPressed = false;
 var wasUpPressed = false;
 var wasDownPressed = false;
 var wasAPressed = false;
+var wasHoldPressed = false;
 /**
  * Playfield.
  */
@@ -1078,14 +1079,14 @@ function gameLoop() {
  
   btnHandle(1, 88, wasAPressed);
 
+  btnHandle(7, 67, wasHoldPressed);
+
   wasLeftPressed = gamepads[0]['buttons'][14]["pressed"];
   wasRightPressed = gamepads[0]['buttons'][15]["pressed"];
   wasUpPressed = gamepads[0]['buttons'][12]["pressed"];
   wasDownPressed = gamepads[0]['buttons'][13]["pressed"];
-
-
   wasAPressed = gamepads[0]['buttons'][1]["pressed"];
-  btnHandle(1, 16, wasAPressed);
+  wasHoldPressed = gamepads[0]['buttons'][7]["pressed"];
   
 
   if (isGameRunning()) {
