@@ -8,6 +8,13 @@ the game so you know why some things are done a certain way.
 */
 'use strict';
 
+
+var gamepads = [];
+var wasLeftPressed = false;
+var wasRightPressed = false;
+var wasUpPressed = false;
+var wasDownPressed = false;
+var wasAPressed = false;
 /**
  * Playfield.
  */
@@ -313,7 +320,13 @@ addEventListener('load', resize, false);
 /**
  * Resets all the settings and starts the game.
  */
+
+function reget() {
+  gamepads = navigator.getGamepads();
+}
+
 function init(gt, params) {
+  reget();
   if (gt === 'replay') {
     watchingReplay = true;
     if(params !== void 0) {
@@ -928,6 +941,9 @@ function update() {
   //  piece.new(preview.next());
   //}
 
+
+
+
   do { // for breaking
     if (flags.holdPiece & keysPushing) {
       piece.hold(); // may cause death
@@ -1029,11 +1045,48 @@ function update() {
   updateScoreTime();
 }
 
+var nothing = function() {}
+
+
+
+function btnHandle(button, key, orig) {
+  if (gamepads[0]['buttons'][button]["pressed"] == orig) {
+
+  } else {
+    if (gamepads[0]['buttons'][button]["pressed"] == true) {
+      keyUpDown( {'type': 'keydown', 'keyCode': key, 'preventDefault': nothing} );
+    } else {
+      keyUpDown( {'type': 'keyup', 'keyCode': key, 'preventDefault': nothing} );
+    }
+  }
+}
+
 var inloop = false; //debug
 function gameLoop() {
 
   //if (frame % 60 == 0) console.log("running");
-  var fps=60;
+  var fps=70;
+
+  
+  reget();
+
+  btnHandle(14, 37, wasLeftPressed);
+
+  btnHandle(15, 39, wasRightPressed);
+  btnHandle(12, 32, wasUpPressed);
+  btnHandle(13, 40, wasDownPressed);
+ 
+  btnHandle(1, 88, wasAPressed);
+
+  wasLeftPressed = gamepads[0]['buttons'][14]["pressed"];
+  wasRightPressed = gamepads[0]['buttons'][15]["pressed"];
+  wasUpPressed = gamepads[0]['buttons'][12]["pressed"];
+  wasDownPressed = gamepads[0]['buttons'][13]["pressed"];
+
+
+  wasAPressed = gamepads[0]['buttons'][1]["pressed"];
+  btnHandle(1, 16, wasAPressed);
+  
 
   if (isGameRunning()) {
     requestAnimFrame(gameLoop);
